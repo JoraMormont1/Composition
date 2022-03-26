@@ -19,10 +19,17 @@ import com.example.composition.domain.entity.Level
 class GameFragment: Fragment() {
 
     private lateinit var level: Level
+    private val viewModelFactory by lazy{
+        GameViewModelFactory(
+            level,
+            requireActivity().application
+        )
+    }
+
     private val viewModel by lazy{
         ViewModelProvider(
             this,
-            AndroidViewModelFactory.getInstance(requireActivity().application)
+            viewModelFactory
         )[GameViewModel::class.java]
     }
 
@@ -72,7 +79,6 @@ class GameFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setClickListenersToOptions()
         observeViewModel()
-        viewModel.startGame(level)
 
     }
 
